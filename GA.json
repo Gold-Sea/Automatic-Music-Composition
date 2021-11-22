@@ -1,6 +1,7 @@
 {
-
-    "name": "BeJson",
-    "url": "http://www.bejson.com",
-    "page": 88
+    "num_tones": 28,
+    "duration_granularity": 0.25,
+    "bars": 4,
+    "pulses": 4,
+    "pulse_duration": ,
 }
