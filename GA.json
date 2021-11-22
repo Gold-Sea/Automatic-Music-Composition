@@ -3,6 +3,5 @@
     "duration_granularity": 0.25,
     "bars": 4,
     "pulses": 4,
-    "pulse_duration": 0.25,
     "model_path": "./data/fit.pt"
 }
