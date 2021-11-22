@@ -2,6 +2,8 @@
     "num_tones": 28,
     "duration_granularity": 0.25,
     "bars": 4,
-    "pulses": 4,
-    "model_path": "./data/fit.pt"
+    "pulses": 8,
+    "model_path": "./data/fit.pt",
+    "batch_size": 16,
+    "is_trained": true
 }
