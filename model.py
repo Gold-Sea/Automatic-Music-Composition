@@ -53,8 +53,8 @@ def inference(genes):
 
 
 if __name__ == "__main__":
-    x = torch.unsqueeze(torch.linspace(-1,1,100),dim=1)
-    y = x * 2 + 1
+    x = torch.unsqueeze(torch.linspace(-100,100,100),dim=1)
+    y = x
     print(x.shape)
     net = Net(1,16,1)
     print(net.children)
@@ -62,13 +62,13 @@ if __name__ == "__main__":
         train(net, x, y ,500, path)
 
     # test model inference
-    # x = []
-    # for i in range(100):
-    #     x.append(i/100)
-    # x = np.array(x)
-    # x = np.reshape(x, (100,1))
-    # print(x)
-    # print(inference(x))
+    x = []
+    for i in range(100):
+        x.append(i/1.0)
+    x = np.array(x)
+    x = np.reshape(x, (100,1))
+    print(x)
+    print(inference(x))
 
     # with open("./GA.json",'w') as f:
     #     load_dict["is_trained"] = True
