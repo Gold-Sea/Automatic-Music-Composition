@@ -1,10 +1,12 @@
 {
-    "num_tones": 28,
+    "num_tones": 26,
     "duration_granularity": 0.25,
     "bars": 4,
     "pulses": 8,
     "model_path": "./data/fit.pt",
-    "batch_size": 16,
+    "batch_size": 8,
     "is_trained": false,
-    "compress_ratio": 100
+    "compress_ratio": 100,
+    "iters": 1000,
+    "num_pop": 32
 }
