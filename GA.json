@@ -7,6 +7,6 @@
     "batch_size": 8,
     "is_trained": false,
     "compress_ratio": 100,
-    "iters": 200,
+    "iters": 600,
     "num_pop": 32
 }
