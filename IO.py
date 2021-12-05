@@ -8,6 +8,7 @@ with open("./GA.json",'r') as load_f:
     load_dict = json.load(load_f)
     ratio = load_dict['compress_ratio']
     bs = load_dict['batch_size']
+    #data_file = load_dict['data_file']
 
 def compress(arr):
     assert isinstance(arr, np.ndarray)
@@ -41,8 +42,8 @@ def read_files(fname):
             tmpstr = f.readline()
     return return_list, return2
 
-def get_data():
-    x,y = read_files('./data/data.txt')
+def get_data(datafile = './data/data.txt'):
+    x,y = read_files(datafile)
     for i in range(8):
         t1, t2 = generate_bad(32)
         x.append(t1)

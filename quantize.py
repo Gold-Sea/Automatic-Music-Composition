@@ -13,7 +13,7 @@ parser.add_argument("-o", "--override", action="store_true", help="Override orig
 
 args = parser.parse_args()
 
-print("Reformatting: {0}".format(args.input))
+#print("Reformatting: {0}".format(args.input))
 
 if os.path.isfile(args.input):
     reformatted = reformat_midi(args.input, verbose=args.verbose, write_to_file=False, override_time_info=args.override)
@@ -30,7 +30,7 @@ elif os.path.isdir(args.input):
         quantizer = quantize_matrix(matrix, stepSize=0.25, quantizeOffsets=True, quantizeDurations=args.override)
         track = matrix_to_mid(quantizer)
         reformat_midi(track, name=midi_file, verbose=args.verbose, write_to_file=True, override_time_info=args.override)
-        print('\n')
+        #print('\n')
 
 else:
     raise IOError("Make sure your path is a valid file name or directory.")

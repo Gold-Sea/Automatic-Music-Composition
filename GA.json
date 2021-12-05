@@ -4,6 +4,7 @@
     "bars": 4,
     "pulses": 8,
     "model_path": "./data/fit.pt",
+    "train_set": "./data/data.txt",
     "batch_size": 8,
     "is_trained": false,
     "compress_ratio": 100,

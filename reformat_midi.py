@@ -57,7 +57,7 @@ def reformat_midi(mid, name=None, verbose=True, write_to_file=False, override_ti
     if not name:
         name = os.path.join(os.getcwd(), mid.filename)
 
-    print("file name:", mid.filename)
+    #print("file name:", mid.filename)
 
     if verbose:
         print("file type:", mid.type)
@@ -85,7 +85,7 @@ def reformat_midi(mid, name=None, verbose=True, write_to_file=False, override_ti
 
         flat_track = MidiTrack()
         flat_track.append(MetaMessage("track_name", name=os.path.split(name)[1], time=0))
-        print("NAME", os.path.split(name)[1])
+        #print("NAME", os.path.split(name)[1])
         flat_track.append(MetaMessage("track_name", name="unnamed", time=0))
         flat_track.append(MetaMessage("instrument_name", name="Bass", time=0))
 
@@ -147,7 +147,7 @@ def reformat_midi(mid, name=None, verbose=True, write_to_file=False, override_ti
     dur_in_measures = dur_in_ticks / ticks_per_bar
     expected_dur_in_ticks = int(math.ceil(dur_in_measures) * ticks_per_bar)
     ticks_to_end_of_bar = expected_dur_in_ticks - dur_in_ticks
-    print(ticks_to_end_of_bar)
+    #print(ticks_to_end_of_bar)
 
     if mid.tracks[0][-1].type == "end_of_track":
         ticks_to_end_of_bar += mid.tracks[0][-1].time
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print("Reformatting: {0}".format(args.input))
+    #print("Reformatting: {0}".format(args.input))
 
     if os.path.isfile(args.input):
         results = reformat_midi(args.input, verbose=args.verbose, write_to_file=True, override_time_info=args.override)
