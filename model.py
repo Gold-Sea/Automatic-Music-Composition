@@ -16,15 +16,21 @@ with open("./GA.json",'r') as load_f:
 
 
 class Net(nn.Module):
-    def __init__(self,n_input,n_hidden,n_output):
+    def __init__(self,n_input,n_hidden,n_output, ch):
+        self.n_hidden = n_hidden
         super(Net,self).__init__()
         self.hidden1 = nn.Linear(n_input,n_hidden)
-        self.hidden2 = nn.Linear(n_hidden,n_hidden)
+        self.hidden2 = nn.Linear(n_hidden//2,n_hidden)
         self.predict = nn.Linear(n_hidden,n_output)
+        self.conv = nn.Conv1d(ch, ch, 2)
 
     def forward(self,input):
         out = self.hidden1(input)
         out = torch.relu(out)
+        s1 = out.shape[0]
+        out = torch.reshape(out, (s1, self.n_hidden//2, 2))
+        out = self.conv(out)
+        out = torch.reshape(out, (s1, self.n_hidden//2))
         out = self.hidden2(out)
         out = torch.sigmoid(out)
         out =self.predict(out)
@@ -66,7 +72,7 @@ if __name__ == "__main__":
         y.append(torch.tensor(torch.from_numpy(_y[i]), dtype=torch.float32))
     # print(x[0].shape)
     # print(y[0].shape)
-    net = Net(32,32,1)
+    net = Net(32,32,1,16)
     print(net.children)
     if not is_trained:
         train(net, x, y ,500, path)

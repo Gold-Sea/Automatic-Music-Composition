@@ -43,7 +43,7 @@ def read_files(fname):
 
 def get_data():
     x,y = read_files('./data/data.txt')
-    for i in range(8):
+    for i in range(14):
         t1, t2 = generate_bad(32)
         x.append(t1)
         y.append(t2)

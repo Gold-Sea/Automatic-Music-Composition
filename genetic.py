@@ -3,6 +3,7 @@ import numpy as np
 from numpy.lib.function_base import append
 import model
 import IO
+import fitness
 
 def takeSecond(elem):
     return elem[1]
@@ -82,7 +83,11 @@ class Population:
             genes.append(i.genes)
         input = np.array(genes)
         res = model.inference(IO.compress(input)) * 100
-        return res
+        res = res.reshape((2*self.num,))
+        res2 = fitness.var(input)
+        res3 = fitness.l2_dis(input)
+        # print(res3 * 100000)
+        return res + res2 + res3 * 1000
     
 
     def evolve(self):
@@ -94,7 +99,6 @@ class Population:
         self.chroms.extend(sons)
         # get score for each individual
         scores = self.get_score()
-        scores = scores.reshape((2*self.num,))
         max_id = []
         for i in range(2*self.num):
             max_id.append((i, scores[i]))
