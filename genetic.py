@@ -1,6 +1,6 @@
 import json
 import numpy as np
-from numpy.lib.function_base import append
+from numpy.lib.function_base import append, select
 import model
 import IO
 import fitness
@@ -90,7 +90,7 @@ class Population:
         return res + res2 + res3 * 1000
     
 
-    def evolve(self):
+    def evolve(self, iter):
         # Reproduction of the population
         sons = []
         for i in self.chroms:
@@ -103,9 +103,20 @@ class Population:
         for i in range(2*self.num):
             max_id.append((i, scores[i]))
         max_id.sort(key=takeSecond, reverse=True)
+        select_num = iter // iters * self.num
         new_ids = []
+        sons = 0
+        parents = 0
         for i in range(self.num):
+            # Sons
+            if max_id[i][0] >= 32 and sons <= select_num:
+                new_ids.append(max_id[i][0])
+                sons += 1
+                continue
+            # Parents
             new_ids.append(max_id[i][0])
+            parents += 1
+        # print("Next generation:", len(new_ids))
 
         tmp_set = self.chroms.copy()
         # update pop
@@ -125,7 +136,7 @@ if __name__ == "__main__":
         l.append(ch)
     pop = Population(l)
     for i in range(iters):
-        pop.evolve()
+        pop.evolve(i)
         if i%100 == 0:
             print("Gap: ", i)
             pop.display()
