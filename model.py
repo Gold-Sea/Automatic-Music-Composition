@@ -40,7 +40,7 @@ class Net(nn.Module):
 # train and save the model checkpoint
 def train(model, features, labels, epochs, path):
     assert len(features) == len(labels)
-    optimizer = torch.optim.SGD(model.parameters(),lr = 0.05)
+    optimizer = torch.optim.SGD(model.parameters(),lr = 0.04)
     loss_func = torch.nn.MSELoss()
     # train batch by batch
     for j in range(epochs):
@@ -53,7 +53,24 @@ def train(model, features, labels, epochs, path):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-    torch.save(model, path) 
+            if (i % 100 == 0):
+                print("loss = %.5lf" % float(loss))
+    #torch.save(model, path) 
+
+def test(model, features, labels):
+    assert len(features) == len(labels)
+    loss_func = torch.nn.MSELoss()
+    tot_loss = 0.0
+    for i in range(len(features)):
+        feature = features[i]
+        label = labels[i]
+        prediction = model(feature)
+        loss = loss_func(prediction, label)
+        print("loss = %.5lf" % float(loss))
+        print(prediction)
+        print(label)
+        tot_loss += float(loss)
+    print("avg total loss = %.5lf" % (tot_loss/len(features)))
 
 # model inference
 def inference(genes):
@@ -62,20 +79,27 @@ def inference(genes):
     mod = torch.load(path)
     return mod(input).detach().numpy()
 
+if (is_trained):
+    net = Net(32,32,1,16)
+    net.load_state_dict(torch.load(path))
 
 if __name__ == "__main__":
     x=[]
     y=[]
-    _x, _y = IO.get_data()
+    _x, _y = IO.get_data('./data/chopin_nocturnes_train.txt')
     for i in range(len(_x)):
         x.append(torch.tensor(torch.from_numpy(_x[i]), dtype=torch.float32))
         y.append(torch.tensor(torch.from_numpy(_y[i]), dtype=torch.float32))
     # print(x[0].shape)
     # print(y[0].shape)
     net = Net(32,32,1,16)
-    print(net.children)
+    #print(net.children)
     if not is_trained:
-        train(net, x, y ,500, path)
+        print('training:')
+        train(net, x, y ,2000, path)
+        torch.save(net.state_dict(), path)
+    else:
+        net.load_state_dict(torch.load(path))
 
     # test model inference
     # x = []
@@ -84,8 +108,15 @@ if __name__ == "__main__":
     # x = np.array(x)
     # x = np.reshape(x, (100,1))
     # print(x)
-    print(inference(x[0]))
-    print(y[0])
+    x_test=[]
+    y_test=[]
+    _x_test, _y_test = IO.get_data('./data/chopin_nocturnes_test.txt')
+    for i in range(len(_x_test)):
+        x_test.append(torch.tensor(torch.from_numpy(_x_test[i]), dtype=torch.float32))
+        y_test.append(torch.tensor(torch.from_numpy(_y_test[i]), dtype=torch.float32))
+    print('testing:')
+    test(net, x_test, y_test)
+
 
     # with open("./GA.json",'w') as f:
     #     load_dict["is_trained"] = True

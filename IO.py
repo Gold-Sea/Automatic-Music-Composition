@@ -41,10 +41,10 @@ def read_files(fname):
             tmpstr = f.readline()
     return return_list, return2
 
-def get_data():
-    x,y = read_files('./data/data.txt')
+def get_data(data_path = './data/data.txt'):
+    x,y = read_files(data_path)
     #generate bad cases
-    for i in range(31):
+    for i in range(len(x)): # the same number of bad cases as good ones
         t1, t2 = generate_bad(32)
         x.append(t1)
         y.append(t2)
