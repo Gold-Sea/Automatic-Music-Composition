@@ -34,6 +34,8 @@ class Net(nn.Module):
         out = self.hidden2(out)
         out = torch.sigmoid(out)
         out =self.predict(out)
+        out = torch.sigmoid(out) # result in (0, 1)
+
         return out
 
 
@@ -96,7 +98,7 @@ if __name__ == "__main__":
     #print(net.children)
     if not is_trained:
         print('training:')
-        train(net, x, y ,2000, path)
+        train(net, x, y , 500, path)
         torch.save(net.state_dict(), path)
     else:
         net.load_state_dict(torch.load(path))
