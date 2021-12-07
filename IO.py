@@ -20,7 +20,7 @@ def decompress(arr):
 def generate_bad(length):
     assert isinstance(length, int)
     tmp = np.random.randint(low=0, high=26, size=(length,))
-    score = np.random.randint(low=0, high=10)
+    score = np.random.randint(low=0, high=1)
     return tmp, [int(score)]
 
 def read_files(fname):

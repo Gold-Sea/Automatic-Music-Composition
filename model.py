@@ -92,13 +92,20 @@ if __name__ == "__main__":
     for i in range(len(_x)):
         x.append(torch.tensor(torch.from_numpy(_x[i]), dtype=torch.float32))
         y.append(torch.tensor(torch.from_numpy(_y[i]), dtype=torch.float32))
+
+    x_test=[]
+    y_test=[]
+    _x_test, _y_test = IO.get_data('./data/chopin_nocturnes_test.txt')
+    for i in range(len(_x_test)):
+        x_test.append(torch.tensor(torch.from_numpy(_x_test[i]), dtype=torch.float32))
+        y_test.append(torch.tensor(torch.from_numpy(_y_test[i]), dtype=torch.float32))
     # print(x[0].shape)
     # print(y[0].shape)
     net = Net(32,32,1,16)
     #print(net.children)
     if not is_trained:
         print('training:')
-        train(net, x, y , 500, path)
+        train(net, x, y , 1000, path)
         torch.save(net.state_dict(), path)
     else:
         net.load_state_dict(torch.load(path))
@@ -110,12 +117,7 @@ if __name__ == "__main__":
     # x = np.array(x)
     # x = np.reshape(x, (100,1))
     # print(x)
-    x_test=[]
-    y_test=[]
-    _x_test, _y_test = IO.get_data('./data/chopin_nocturnes_test.txt')
-    for i in range(len(_x_test)):
-        x_test.append(torch.tensor(torch.from_numpy(_x_test[i]), dtype=torch.float32))
-        y_test.append(torch.tensor(torch.from_numpy(_y_test[i]), dtype=torch.float32))
+    
     print('testing:')
     test(net, x_test, y_test)
 
