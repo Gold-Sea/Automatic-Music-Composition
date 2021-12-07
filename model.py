@@ -78,8 +78,9 @@ def test(model, features, labels):
 def inference(genes):
     # assert isinstance(genes, np.ndarray)
     input = torch.tensor(genes,dtype=torch.float32)
-    mod = torch.load(path)
-    return mod(input).detach().numpy()
+    #mod = torch.load(path)
+    #return mod(input).detach().numpy()
+    return net(input).detach().numpy()
 
 if (is_trained):
     net = Net(32,32,1,16)
