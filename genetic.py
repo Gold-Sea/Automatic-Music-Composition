@@ -4,6 +4,7 @@ from numpy.lib.function_base import append, select
 import model
 import IO
 import fitness
+import random
 
 def takeSecond(elem):
     return elem[1]
@@ -67,6 +68,26 @@ class Chromosome:
             raise ValueError('Type ID is one of 0,1,2')
 
         return Chromosome(load_dict, genes)
+
+    def crossover(self, other_genes):
+        p1 = self.genes.copy()
+        p2 = other_genes.copy()
+        length = len(p1)
+        assert length==len(p2)
+        res = [0 for i in range(length)]
+        index1 = random.sample(range(0, length), length//2)
+        index2 = []
+        for i in range(length):
+            if i not in index1:
+                index2.append(i)
+        for i in index1:
+            res[i] = p1[i]
+        for i in index2:
+            res[i] = p2[i]
+        return Chromosome(load_dict, res)
+        
+        
+
 
 class Population:
     def __init__(self, chroms):
