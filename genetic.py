@@ -9,6 +9,19 @@ import random
 def takeSecond(elem):
     return elem[1]
 
+def swap(l, i1, i2):
+    temp = l[i1]
+    l[i1] = l[i2]
+    l[i2] = temp
+
+pro = [90, 3, 3, 3, 1]
+p = []
+for i in range(len(pro)):
+    if i == 0:
+        p.append(pro[i])
+    else:
+        p.append(pro[i] + p[i - 1])
+
 with open("./GA.json",'r') as load_f:
     load_dict = json.load(load_f)
     num_tones = load_dict['num_tones']
@@ -34,6 +47,7 @@ class Chromosome:
         assert isinstance(func, function)
         self.Fitness = func
 
+    # 变异操作
     def mutate(self, typeid):
         genes = self.genes.copy()
         if typeid == 0:
@@ -69,6 +83,7 @@ class Chromosome:
 
         return Chromosome(load_dict, genes)
 
+    # 交叉操作
     def crossover(self, other_genes):
         p1 = self.genes.copy()
         p2 = other_genes.copy()
@@ -84,8 +99,69 @@ class Chromosome:
             res[i] = p1[i]
         for i in index2:
             res[i] = p2[i]
+        res = np.array(res)
         return Chromosome(load_dict, res)
+
+    # 移调操作 
+    def transpotion(self):
+        genes = self.genes.copy()
+        upper = self.num_tone - 1
+        lower = 0
+        max_v = -1
+        min_v = 1e9
+        for i in genes:
+            if i !=upper and i!=lower:
+                max_v = max(max_v, i)
+                min_v = min(min_v, i)
+        lower = lower - min_v + 1
+        upper = upper - max_v - 1
+        if lower == upper:
+            randv = 0
+        else:
+            randv = np.random.randint(low=lower, high=upper)
+        res = []
+        for i in genes:
+            if i == 0 or i == self.num_tone - 1:
+                res.append(i)
+            else:
+                res.append(randv + i)
+        res = np.array(res)
+        return Chromosome(load_dict, res)
+
+
+    #逆行变换
+    def retrograde(self):
+        genes = self.genes.copy()
+        # traverse list to sink all extended notes
+        extend = self.num_tone - 1
+        for i in range(1, len(genes)):
+            if genes[i] == extend:
+                swap(genes, i, i-1)
         
+        genes = genes.tolist()
+        genes.reverse()
+        genes = np.array(genes)
+        return Chromosome(load_dict, genes)
+
+    #倒影变换
+    def inversion(self):
+        # Criteria for selecting mirror images
+        cen_note = self.num_tone // 2
+        genes = []
+        for i in self.genes:
+            if i == 0 or i == self.num_tone - 1:
+                genes.append(i)
+                continue
+            delta = i - cen_note
+            tmp = cen_note - delta
+            # Prevent exceeding the border
+            if tmp < 1:
+                tmp = 1
+            if tmp > self.num_tone - 2:
+                tmp = self.num_tone - 2
+            genes.append(tmp)
+        genes = np.array(genes)
+        return Chromosome(load_dict, genes)
         
 
 
@@ -114,9 +190,31 @@ class Population:
     def evolve(self, iter):
         # Reproduction of the population
         sons = []
-        for i in self.chroms:
-            id = np.random.randint(low=0, high=3)
-            sons.append(i.mutate(id))
+        '''The probability of selecting five methods of generating 
+        offspring: mutate, crossover, transpotion, retrograde, inversion'''
+        global p
+        probability = np.random.randint(low=1, high=101)
+        length = len(self.chroms)
+        for ik in range(length):
+            if probability <= p[0]:
+                id = np.random.randint(low=0, high=3)
+                index = np.random.randint(low=0, high=length)
+                sons.append(self.chroms[index].mutate(id))
+            elif probability <= p[1]:
+                parents = random.sample(range(0, length), 2)
+                sons.append(self.chroms[parents[0]].crossover(self.chroms[parents[1]].genes))
+            elif probability <= p[2]:
+                index = np.random.randint(low=0, high=length)
+                sons.append(self.chroms[index].transpotion())
+            elif probability <= p[3]:
+                index = np.random.randint(low=0, high=length)
+                sons.append(self.chroms[index].retrograde())
+            elif probability <= p[4]:
+                index = np.random.randint(low=0, high=length)
+                sons.append(self.chroms[index].inversion())
+        # for i in self.chroms:
+        #     id = np.random.randint(low=0, high=3)
+        #     sons.append(i.mutate(id))
         self.chroms.extend(sons)
         # get score for each individual
         scores = self.get_score()
