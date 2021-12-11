@@ -37,7 +37,7 @@ def play_sequence(seq):
 
 if (__name__ == '__main__'):
     #play_sequence([9,25,25,25,24,24,0,25,25,25,6,24,9,25,25,25])
-    X, _ = IO.read_files('./data/tchai_new.txt')
+    X, _ = IO.read_files('./data/chopin_nocturnes_train.txt')
     #print(X[0])
     for x in X:
         print(x)
