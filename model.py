@@ -55,6 +55,18 @@ def train(model, features, labels, epochs, path):
             optimizer.step()
     torch.save(model, path) 
 
+def test(features, labels, path):
+    model = torch.load(path)
+    loss_func = torch.nn.MSELoss()
+    tot_loss = []
+    for i in range(len(features)):
+        feature = features[i]
+        label = labels[i]
+        prediction = model(feature)
+        loss = loss_func(prediction, label)
+        tot_loss.append(float(loss))
+    print("tot avg loss =", sum(tot_loss)/len(tot_loss))
+
 # model inference
 def inference(genes):
     # assert isinstance(genes, np.ndarray)
@@ -66,16 +78,25 @@ def inference(genes):
 if __name__ == "__main__":
     x=[]
     y=[]
-    _x, _y = IO.get_data()
+    _x, _y = IO.get_data("./data/chopin_nocturnes_train.txt")
     for i in range(len(_x)):
         x.append(torch.tensor(torch.from_numpy(_x[i]), dtype=torch.float32))
         y.append(torch.tensor(torch.from_numpy(_y[i]), dtype=torch.float32))
+
+    x_test=[]
+    y_test=[]
+    _x_test, _y_test = IO.get_data("./data/chopin_nocturnes_test.txt")
+    for i in range(len(_x_test)):
+        x_test.append(torch.tensor(torch.from_numpy(_x_test[i]), dtype=torch.float32))
+        y_test.append(torch.tensor(torch.from_numpy(_y_test[i]), dtype=torch.float32))
     # print(x[0].shape)
     # print(y[0].shape)
     net = Net(32,32,1,16)
     print(net.children)
     if not is_trained:
         train(net, x, y ,500, path)
+    else:
+        test(x_test, y_test, path)
 
     # test model inference
     # x = []
