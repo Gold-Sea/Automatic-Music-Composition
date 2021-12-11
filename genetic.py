@@ -5,6 +5,7 @@ import model
 import IO
 import fitness
 import random
+import sound
 
 def takeSecond(elem):
     return elem[1]
@@ -162,6 +163,9 @@ class Chromosome:
             genes.append(tmp)
         genes = np.array(genes)
         return Chromosome(load_dict, genes)
+    
+    def playsound(self):
+        sound.play_sequence(list(self.genes))
         
 
 
@@ -170,9 +174,13 @@ class Population:
         self.chroms = chroms
         self.num = len(chroms)
 
-    def display(self):
+    def display(self, sound = False):
+        cnt = 0
         for i in self.chroms:
             print(i.genes)
+            if (sound and cnt < 3): # play first 3 chroms
+                i.playsound()
+                cnt += 1
     
     def get_score(self):
         genes = []
@@ -258,7 +266,7 @@ if __name__ == "__main__":
         pop.evolve(i)
         if i%100 == 0:
             print("Gap: ", i)
-            pop.display()
+            pop.display(sound=True)
 
     # ch = Chromosome(load_dict)
     # ch.generate_parent()
