@@ -66,7 +66,7 @@ def inference(genes):
 if __name__ == "__main__":
     x=[]
     y=[]
-    _x, _y = IO.get_data()
+    _x, _y = IO.get_data("./data/chopin_nocturnes_train.txt")
     for i in range(len(_x)):
         x.append(torch.tensor(torch.from_numpy(_x[i]), dtype=torch.float32))
         y.append(torch.tensor(torch.from_numpy(_y[i]), dtype=torch.float32))
