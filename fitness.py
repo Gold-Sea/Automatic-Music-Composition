@@ -112,4 +112,5 @@ if __name__ == "__main__":
     # x = np.reshape(x, (2,50))
     # print(x)
     # print(symmetry(x))
-    l2_dis(None)
+    # l2_dis(None)
+    pass
