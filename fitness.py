@@ -1,3 +1,4 @@
+# 建立多种适应度函数
 import numpy as np
 import IO
 import json
@@ -103,14 +104,4 @@ def interval_eval(arr):
     return np.array(ret)
 
 if __name__ == "__main__":
-    
-    # x = []
-    # for i in range(100):
-    #     x.append(i/100)
-    # x[49] = 0.
-    # x = np.array(x)
-    # x = np.reshape(x, (2,50))
-    # print(x)
-    # print(symmetry(x))
-    # l2_dis(None)
     pass

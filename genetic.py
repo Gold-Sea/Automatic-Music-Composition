@@ -1,3 +1,4 @@
+# 遗传算法主程序
 import json
 import numpy as np
 from numpy.lib.function_base import append, select
@@ -190,15 +191,9 @@ class Population:
         input = np.array(genes)
 
         res = model.inference(IO.compress(input)) * 100
-        #print(len(self.chroms))
-        #print(len(input))
-        #print(len(res))
         res = res.reshape((len(self.chroms),))
         res2 = fitness.var(input)
-        #res3 = fitness.l2_dis(input)
-        # print(res3 * 100000)
-        #return res + res2 + res3 * 1000
-        # try different combinations of fitness functions
+        # 此处可以选择不同的适应度函数组合
         return 0*fitness.l2_dis(input) + 1*fitness.knn(input)
 
 
@@ -263,43 +258,16 @@ class Population:
 if __name__ == "__main__":
     Net = model.Net
 
+    # 随机产生初始种群
     l = []
     for i in range(num_pop):
         ch = Chromosome(load_dict)
         ch.generate_parent()
         l.append(ch)
     pop = Population(l)
+    # 执行遗传算法
     for i in range(iters):
         pop.evolve(i)
         if i%50 == 0:
             print("Gap: ", i)
             pop.display(sound=True)
-
-    # ch = Chromosome(load_dict)
-    # ch.generate_parent()
-    # chan = 0
-    # for i in range(iters):
-    #     verbose = False
-    #     if i % 100 == 0:
-    #         verbose = True
-    #         print("Search in %s iters"%{i})
-    #     id = np.random.randint(low=0, high=3)
-    #     son = ch.mutate(id)
-    #     ch_g = ch.genes.reshape(1, ch.length)
-    #     son_g = son.genes.reshape(1, son.length)
-    #     score_ch = model.inference(IO.compress(ch_g)) * 100
-        
-    #     score_son = model.inference(IO.compress(son_g)) * 100
-    #     if score_ch < score_son:
-    #         ch = son
-    #         chan += 1
-    #     if verbose:
-    #         print(id)
-    #         print(ch.genes)
-    #         print(son.genes)
-    #         print("score for parent: ", score_ch)
-    #         print("score for son: ", score_son)
-    #         print("changed: " ,chan)
-
-        
-        

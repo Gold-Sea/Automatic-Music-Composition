@@ -1,3 +1,4 @@
+# ANN模型的训练和推理
 import numpy as np
 import torch
 import torch.nn as nn
@@ -14,7 +15,7 @@ with open("./GA.json",'r') as load_f:
     bs = load_dict["batch_size"]
     is_trained = load_dict["is_trained"]
 
-
+# ANN的实现
 class Net(nn.Module):
     def __init__(self,n_input,n_hidden,n_output, ch):
         self.n_hidden = n_hidden
@@ -37,7 +38,7 @@ class Net(nn.Module):
         return out
 
 
-# train and save the model checkpoint
+# 训练并保存ANN模型
 def train(model, features, labels, epochs, path):
     assert len(features) == len(labels)
     optimizer = torch.optim.SGD(model.parameters(),lr = 0.05)
@@ -55,6 +56,7 @@ def train(model, features, labels, epochs, path):
             optimizer.step()
     torch.save(model, path) 
 
+# ANN测试
 def test(features, labels, path):
     model = torch.load(path)
     loss_func = torch.nn.MSELoss()
@@ -67,9 +69,8 @@ def test(features, labels, path):
         tot_loss.append(float(loss))
     print("tot avg loss =", sum(tot_loss)/len(tot_loss))
 
-# model inference
+# ANN推理
 def inference(genes):
-    # assert isinstance(genes, np.ndarray)
     input = torch.tensor(genes,dtype=torch.float32)
     mod = torch.load(path)
     return mod(input).detach().numpy()
@@ -89,26 +90,10 @@ if __name__ == "__main__":
     for i in range(len(_x_test)):
         x_test.append(torch.tensor(torch.from_numpy(_x_test[i]), dtype=torch.float32))
         y_test.append(torch.tensor(torch.from_numpy(_y_test[i]), dtype=torch.float32))
-    # print(x[0].shape)
-    # print(y[0].shape)
+
     net = Net(32,32,1,16)
     print(net.children)
     if not is_trained:
         train(net, x, y ,500, path)
     else:
         test(x_test, y_test, path)
-
-    # test model inference
-    # x = []
-    # for i in range(100):
-    #     x.append(i/1.0)
-    # x = np.array(x)
-    # x = np.reshape(x, (100,1))
-    # print(x)
-    print(inference(x[0]))
-    print(y[0])
-
-    # with open("./GA.json",'w') as f:
-    #     load_dict["is_trained"] = True
-    #     json.dump(load_dict, f)
-    

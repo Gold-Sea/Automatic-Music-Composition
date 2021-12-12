@@ -1,3 +1,4 @@
+# 播放音频
 import pygame.midi
 import time
 import json
@@ -9,13 +10,16 @@ with open("./GA.json",'r') as load_f:
 
 pygame.midi.init()
 
+# 与操作系统的音频合成器建立连接
 player = pygame.midi.Output(pygame.midi.get_default_output_id())
 
+# 播放单个音符
 def play_one_note(num, dur):
     player.note_on(num, 64, 0)
     time.sleep(dur)
     player.note_off(num, 64, 0)
 
+# 播放音乐序列
 def play_sequence(seq):
     i = 0
     n = len(seq)

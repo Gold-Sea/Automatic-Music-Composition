@@ -1,3 +1,4 @@
+# 数据文件的输入输出
 import numpy as np
 import json
 import re
@@ -43,7 +44,7 @@ def read_files(fname):
 
 def get_data(path = './data/data.txt'):
     x,y = read_files(path)
-    #generate bad cases
+    # 生成随机数据
     for i in range(len(x)):
         t1, t2 = generate_bad(32)
         x.append(t1)
@@ -70,22 +71,7 @@ def get_data(path = './data/data.txt'):
         tmpy = y[i*bs:last]
         in_x.append(compress(np.array(tmpx)))
         ou_y.append(compress(np.array(tmpy)))
-    # for i in in_x:
-    #     print(i)
-    # for j in ou_y:
-    #     print(j)
     return in_x, ou_y
 
 if __name__ == "__main__":
-    # get_data()
     pass
-    # x = []
-    # for i in range(100):
-    #     x.append(i)
-    # x[49] = 0.
-    # x = np.array(x)
-    # x = np.reshape(x, (2,50))
-    # print(x)
-    # y = compress(x)
-    # print(compress(x))
-    # print(decompress(y))
