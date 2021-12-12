@@ -192,7 +192,9 @@ class Population:
         res2 = fitness.var(input)
         res3 = fitness.l2_dis(input)
         # print(res3 * 100000)
-        return res + res2 + res3 * 1000
+#         return res + res2 + res3 * 1000
+        # you can choose your own weights param for different 
+        return res
     
 
     def evolve(self, iter):
