@@ -102,9 +102,6 @@ def interval_eval(arr):
         ret.append(sco)
     return np.array(ret)
 
-
-
-
 if __name__ == "__main__":
     
     # x = []
