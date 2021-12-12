@@ -34,7 +34,7 @@ def symmetry(arr):
 
 def l2_dis(arr):
     assert isinstance(arr, np.ndarray)
-    x,_ = IO.read_files('./data/data.txt')
+    x,_ = IO.read_files('./data/chopin_nocturnes_train.txt')
     x = np.array(x)
     res = []
     for i in arr:
@@ -46,7 +46,7 @@ def l2_dis(arr):
 
 def knn(arr):
     assert isinstance(arr, np.ndarray)
-    x,_ = IO.read_files('./data/data.txt')
+    x,_ = IO.read_files('./data/chopin_nocturnes_train.txt')
     x = np.array(x)
     res = []
     for i in arr:
@@ -80,13 +80,13 @@ def interval_eval(arr):
                 sco += 1
             #一度
             elif interval == 1:
-                sco += 10
+                sco += -50
             #纯四度
             elif in_c == 4 and interval == 5:
-                sco += 10
+                sco += 30
             #纯五度
             elif in_c == 5 and interval == 7:
-                sco += 10
+                sco += 30
             #纯八度
             elif in_c == 0 and interval == 12:
                 sco += 10
@@ -98,7 +98,7 @@ def interval_eval(arr):
                 sco += 6
             #一个八度内其他的
             else:
-                sco += 3
+                sco += -50
         ret.append(sco)
     return np.array(ret)
 

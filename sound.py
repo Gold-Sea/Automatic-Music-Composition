@@ -27,6 +27,7 @@ def play_sequence(seq):
                 dur += 1
                 i += 1
             play_one_note(x+52, 0.5*dur)
+            #play_one_note(x+59, 0.5*dur)
         else:
             dur = 1
             while (i < n-1 and seq[i+1] == num_tones-1):
@@ -36,9 +37,9 @@ def play_sequence(seq):
         i += 1
 
 if (__name__ == '__main__'):
-    #play_sequence([9,25,25,25,24,24,0,25,25,25,6,24,9,25,25,25])
-    X, _ = IO.read_files('./data/chopin_nocturnes_train.txt')
+    play_sequence([8, 25, 25, 13, 8, 25, 6, 25, 5, 25, 3, 25, 1 ,25 ,25 ,25, 1 ,25 ,1 ,25, 3 ,25,5,25,5,25,1,25,5,25,6,25])
+    #X, _ = IO.read_files('./data/chopin_nocturnes_train.txt')
     #print(X[0])
-    for x in X:
-        print(x)
-        play_sequence(x)
+    #for x in X:
+    #    print(x)
+    #    play_sequence(x)

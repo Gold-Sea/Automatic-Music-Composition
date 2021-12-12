@@ -176,9 +176,10 @@ class Population:
 
     def display(self, sound = False):
         cnt = 0
+        print(self.get_score())
         for i in self.chroms:
             print(i.genes)
-            if (sound and cnt < 3): # play first 3 chroms
+            if (sound and cnt < 1): # play first 3 chroms
                 i.playsound()
                 cnt += 1
     
@@ -187,13 +188,19 @@ class Population:
         for i in self.chroms:
             genes.append(i.genes)
         input = np.array(genes)
+
         res = model.inference(IO.compress(input)) * 100
-        res = res.reshape((2*self.num,))
+        #print(len(self.chroms))
+        #print(len(input))
+        #print(len(res))
+        res = res.reshape((len(self.chroms),))
         res2 = fitness.var(input)
-        res3 = fitness.l2_dis(input)
+        #res3 = fitness.l2_dis(input)
         # print(res3 * 100000)
-        return res + res2 + res3 * 1000
-    
+        #return res + res2 + res3 * 1000
+        # try different combinations of fitness functions
+        return 0*fitness.l2_dis(input) + 1*fitness.knn(input)
+
 
     def evolve(self, iter):
         # Reproduction of the population
@@ -264,7 +271,7 @@ if __name__ == "__main__":
     pop = Population(l)
     for i in range(iters):
         pop.evolve(i)
-        if i%100 == 0:
+        if i%50 == 0:
             print("Gap: ", i)
             pop.display(sound=True)
 
